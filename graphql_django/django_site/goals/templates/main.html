@@ -1,0 +1,37 @@
+{% load static %}
+
+<link rel="stylesheet" type="text/css" href="{% static 'style.css' %}" />
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<div class="margin">
+<div class="header">
+<h1>Objectives for {{ user.first_name }} {{ user.last_name }}</h1>
+</div>
+<div class="content">
+
+<ul>
+{% for o in objectives %}
+    <li>
+        <h3>{{ o.name }} <span class="progress"> {{ o.progress }}%</span></h3>
+        <ul>
+        {% for kr in o.key_results.all %}
+            <li>
+                {{ kr.name }}
+                <span class="progress">
+                    {{ kr.current_value }}/{{ kr.target_value }}
+                </span>
+            </li>
+        {% endfor %}
+        </ul>
+    </li>
+{% endfor %}
+</ul>
+</div>
+</div>
+</body>
+</html>

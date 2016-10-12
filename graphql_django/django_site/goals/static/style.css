@@ -1,0 +1,50 @@
+li {
+    color: #555;
+    margin: 10px 0;
+}
+
+h3 {
+    text-align: left;
+    margin: 20px 0 5px 0;
+}
+
+.margin {
+    height: 100vh;
+    margin: -5px 180px;
+    border-color: #acc5d0;
+    border-width: 4px;
+    border-left-style: solid;
+    border-right-style: solid;
+    overflow: hidden;
+}
+.header {
+    background-color: #003050;
+    padding: 15px 60px;
+    color: #EEE;
+}
+
+h1, h2 {
+    font-weight: 100;
+    font-family: 'Raleway', arial, sans-serif;
+    font-style: normal;
+}
+
+.content {
+    padding: 10px 60px 40px 60px;
+    background-color: #EAF1F4;
+    height: 100%;
+}
+
+.progress {
+    font-style: italic;
+    float: right;
+    margin-right: 60px;
+}
+
+html, body {
+    font-family: 'Raleway', arial, sans-serif;
+    background-color: #dcecf3;
+    height: 100%;
+    overflow: hidden;
+    margin: 0;
+}
