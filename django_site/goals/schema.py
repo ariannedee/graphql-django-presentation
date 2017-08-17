@@ -6,7 +6,7 @@ from graphene import relay
 from graphene_django import DjangoObjectType
 from graphene_django.filter import DjangoFilterConnectionField
 
-from goals.models import KeyResult, Objective
+from goals.models import Task, Goal
 
 
 class TaskNode(DjangoObjectType):
@@ -17,28 +17,22 @@ class TaskNode(DjangoObjectType):
         return self.pk
 
     class Meta:
-        model = KeyResult
+        model = Task
         # interfaces = (relay.Node,)
 
 
 class GoalNode(DjangoObjectType):
     progress = graphene.Float(description='The average task progress')
     pk = graphene.Int()
-    tasks = graphene.List(TaskNode)
 
     @graphene.resolve_only_args
     def resolve_pk(self):
         return self.pk
 
-    @graphene.resolve_only_args
-    def resolve_tasks(self):
-        return self.key_results.filter(closed=False)
-
     class Meta:
-        model = Objective
-        # interfaces = (relay.Node,)
-        filter_fields = ['name',]
-        exclude_fields = ['key_results',]
+        model = Goal
+        interfaces = (relay.Node,)
+        filter_fields = ['name']
 
 
 class OwnerNode(DjangoObjectType):
@@ -58,17 +52,12 @@ class GoalFilter(django_filters.FilterSet):
     name = django_filters.CharFilter(lookup_expr='icontains')
 
     class Meta:
-        model = Objective
+        model = Goal
         fields = ['name']
 
 
 class Query(graphene.ObjectType):
-    # goals_relay = DjangoFilterConnectionField(ObjectiveNode, filterset_class=ObjectiveFilter)
-    goals = graphene.List(GoalNode)
-
-    @graphene.resolve_only_args
-    def resolve_goals(self):
-        return Objective.objects.all()
+    goals_relay = DjangoFilterConnectionField(GoalNode, filterset_class=GoalFilter)
 
 
 class TaskInput(graphene.InputObjectType):
@@ -93,9 +82,9 @@ class CreateGoal(graphene.Mutation):
         owner = context.user
         goal_data = args['goal']
         name = goal_data['name']
-        goal = Objective.objects.create(owner=owner, name=name)
+        goal = Goal.objects.create(owner=owner, name=name)
         for kr_data in goal_data.get('tasks', []):
-            kr = KeyResult(objective=goal, name=kr_data['name'])
+            kr = Task(goal=goal, name=kr_data['name'])
             if 'starting_value' in kr_data:
                 kr.starting_value = kr_data['starting_value']
                 kr.current_value = kr.starting_value
@@ -114,11 +103,11 @@ class UpdateTask(graphene.Mutation):
 
     @atomic
     def mutate(self, args, context, info):
-        kr = KeyResult.objects.get(pk=args['pk'])
+        kr = Task.objects.get(pk=args['pk'])
         current_value = args['current_value']
         kr.current_value = current_value
         kr.save()
-        return UpdateTask(goal=kr.objective)
+        return UpdateTask(goal=kr.goal)
 
 
 class Mutation(graphene.ObjectType):
