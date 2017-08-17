@@ -1,4 +1,4 @@
-#!/Users/arianne/Desktop/Interview/django_site/.venv/bin/python
+#!/Users/arianne/Documents/presentations/django_site/.venv/bin/python
 
 import sys
 import getopt
