@@ -9,13 +9,13 @@ class Goal(models.Model):
 
     @property
     def progress(self):
-        task_progresses = [kr.current_value / kr.target_value for kr in self.tasks.all()]
+        task_progresses = [task.current_value / task.target_value for task in self.tasks.all()]
         progress_avg = sum(task_progresses) / self.tasks.count()
         return round(progress_avg, 2)
 
 
 class Task(models.Model):
-    objective = models.ForeignKey(Goal, on_delete=models.CASCADE, related_name='tasks')
+    goal = models.ForeignKey(Goal, on_delete=models.CASCADE, related_name='tasks')
     name = models.CharField(max_length=500)
     starting_value = models.FloatField(default=0)
     target_value = models.FloatField(default=100)

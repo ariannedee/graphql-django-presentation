@@ -18,7 +18,7 @@ class TaskNode(DjangoObjectType):
 
     class Meta:
         model = Task
-        # interfaces = (relay.Node,)
+        interfaces = (relay.Node,)
 
 
 class GoalNode(DjangoObjectType):
@@ -43,7 +43,7 @@ class OwnerNode(DjangoObjectType):
         return u'{} {}'.format(self.first_name, self.last_name)
 
     class Meta:
-        # interfaces = (relay.Node,)
+        interfaces = (relay.Node,)
         model = User
 
 
@@ -57,7 +57,7 @@ class GoalFilter(django_filters.FilterSet):
 
 
 class Query(graphene.ObjectType):
-    goals_relay = DjangoFilterConnectionField(GoalNode, filterset_class=GoalFilter)
+    goals = DjangoFilterConnectionField(GoalNode, filterset_class=GoalFilter)
 
 
 class TaskInput(graphene.InputObjectType):
