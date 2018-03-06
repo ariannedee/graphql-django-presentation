@@ -1,4 +1,9 @@
-### GraphQL and Django+Graphene sample project
+## GraphQL + Django
+I have given versions of this presentation at:
+- DjangoVan meetup in October 2016
+- DjangoCon in August 2017 ([video recording](https://www.youtube.com/watch?v=bTh-JPgKKdQ))
+
+### Sample project
 
 1. Clone or download the repo
 2. Set up a virtual env
